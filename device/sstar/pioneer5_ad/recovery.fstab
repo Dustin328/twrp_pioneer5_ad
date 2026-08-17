@@ -1,0 +1,21 @@
+# mount point	fstype	device					device2				flags
+/system		ext4	system													flags=display="System";backup=1;logical
+/vendor		ext4	vendor													flags=display="Vendor";backup=1;logical
+/odm		ext4	odm														flags=display="Odm";backup=1;logical
+/product	ext4	product													flags=display="Product";backup=1;logical
+
+/boot		emmc	/dev/block/by-name/boot									flags=display="Boot";backup=1;flashimg=1
+/recovery	emmc	/dev/block/by-name/recovery								flags=display="Recovery";backup=1;flashimg=1
+/data		ext4	/dev/block/by-name/userdata								flags=fileencryption=aes-256-xts:aes-256-cts:v2+inlinecrypt_optimized,keydirectory=/metadata/vold/metadata_encryption
+/cache		ext4	/dev/block/by-name/cache								flags=display="Cache"
+/metadata	ext4	/dev/block/by-name/metadata								flags=display="Metadata";backup=1
+/efs		emmc	/dev/block/by-name/efs									flags=display="EFS";backup=1
+/sec_efs	emmc	/dev/block/by-name/sec_efs								flags=display="Sec EFS";backup=1
+
+/dtbo		emmc	/dev/block/by-name/dtbo									flags=display="DTBO";backup=1;flashimg=1
+/vbmeta		emmc	/dev/block/by-name/vbmeta								flags=display="VBMeta";backup=1;flashimg=1
+/vbmeta_system	emmc	/dev/block/by-name/vbmeta_system							flags=display="VBMeta System";backup=1;flashimg=1
+/vbmeta_vendor	emmc	/dev/block/by-name/vbmeta_vendor							flags=display="VBMeta Vendor";backup=1;flashimg=1
+
+/external_sd	vfat	/dev/block/mmcblk1p1			/dev/block/mmcblk1	flags=display="MicroSD";storage;wipeui;removable
+/usb_otg	vfat	/dev/block/sda1				/dev/block/sda		flags=display="USB-OTG";storage;wipeui;removable
