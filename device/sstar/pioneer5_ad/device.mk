@@ -28,3 +28,13 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 PRODUCT_AAPT_CONFIG := normal
 PRODUCT_AAPT_PREBUILT_DPI := hdpi
 PRODUCT_AAPT_PREF_CONFIG := hdpi
+
+# Inherit from Omni common
+$(call inherit-product, vendor/omni/config/common.mk)
+
+# Device name
+PRODUCT_NAME := omni_pioneer5_ad
+PRODUCT_DEVICE := pioneer5_ad
+PRODUCT_BRAND := sstar
+PRODUCT_MODEL := pioneer5_ad
+PRODUCT_MANUFACTURER := sstar
