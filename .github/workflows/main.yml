@@ -35,6 +35,11 @@ jobs:
           mkdir -p device/sstar/pioneer5_ad
           cp -r $GITHUB_WORKSPACE/device/sstar/pioneer5_ad/* device/sstar/pioneer5_ad/
 
+      - name: Apply Unisoc DRM Patch
+        run: |
+          cd ~/twrp
+          cp $GITHUB_WORKSPACE/patches/graphics_drm.cpp bootable/recovery/minuitwrp/graphics_drm.cpp
+
       - name: Build
         run: |
           cd ~/twrp
