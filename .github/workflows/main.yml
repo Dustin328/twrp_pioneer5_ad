@@ -44,11 +44,10 @@ jobs:
           cd ~/twrp
           python3 $GITHUB_WORKSPACE/patches/apply_misc_bcb_fix.py bootable/recovery/twrp-functions.cpp
 
-      - name: Clean Recovery Directory
+      - name: Clean Build Output
         run: |
           cd ~/twrp
-          sudo rm -rf out/target/product/pioneer5_ad/recovery
-          sudo rm -rf out/target/product/pioneer5_ad/obj/PACKAGING/recovery_intermediates
+          sudo rm -rf out/
 
       - name: Build
         run: |
