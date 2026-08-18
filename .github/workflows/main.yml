@@ -17,6 +17,13 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y bc build-essential zip curl libc6-dev libncurses5-dev libssl-dev python3-pip
           
+      - name: Clean Build Output
+        run: |
+          cd ~/twrp || mkdir ~/twrp && cd ~/twrp
+          sudo killall -9 java python* 2>/dev/null || true
+          sudo rm -rf out/
+          sudo rm -rf .repo/project-objects .repo/projects .repo/worktrees 2>/dev/null || true
+
       - name: Sync TWRP Minimal Manifest
         run: |
           mkdir ~/twrp
@@ -43,11 +50,6 @@ jobs:
         run: |
           cd ~/twrp
           python3 $GITHUB_WORKSPACE/patches/apply_misc_bcb_fix.py bootable/recovery/twrp-functions.cpp
-
-      - name: Clean Build Output
-        run: |
-          cd ~/twrp
-          sudo rm -rf out/
 
       - name: Build
         run: |

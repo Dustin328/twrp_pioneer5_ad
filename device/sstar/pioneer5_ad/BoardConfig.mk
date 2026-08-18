@@ -48,6 +48,7 @@ BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 1
 # Platform
 TARGET_BOARD_PLATFORM := ums512
 TARGET_BOOTLOADER_BOARD_NAME := ums512_1h10
+TARGET_COPY_OUT_VENDOR := vendor
 
 # Metadata
 BOARD_USES_METADATA_PARTITION := true
@@ -58,6 +59,11 @@ BOARD_RECOVERYIMAGE_PARTITION_SIZE := 41943040 # 40MB based on recovery_backup.i
 
 # Dynamic Partitions
 BOARD_USES_DYNAMIC_PARTITIONS := true
+
+# Root Symlinks
+BOARD_ROOT_EXTRA_SYMLINKS := \
+    /vendor/bin/adbd:/system/bin/adbd \
+    /mnt/vendor/persist:/persist
 
 # System as root
 BOARD_SUPPORTS_VBOOT := true
