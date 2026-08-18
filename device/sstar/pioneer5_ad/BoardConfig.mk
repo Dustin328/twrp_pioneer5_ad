@@ -56,9 +56,12 @@ BOARD_USES_METADATA_PARTITION := true
 BOARD_FLASH_BLOCK_SIZE := 131072 # (Page Size * 64)
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 41943040 # 40MB based on recovery_backup.img size
 
+# Dynamic Partitions
+BOARD_USES_DYNAMIC_PARTITIONS := true
+
 # System as root
 BOARD_SUPPORTS_VBOOT := true
-BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
+# BOARD_BUILD_SYSTEM_ROOT_IMAGE := true # Removed for Android 12 Dynamic Partitions
 
 # TWRP Configuration
 TW_THEME := portrait_hdpi
