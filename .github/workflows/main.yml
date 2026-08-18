@@ -31,14 +31,6 @@ jobs:
       - name: Clone Device Tree
         run: |
           cd ~/twrp
-          mkdir -p .repo/local_manifests
-          cat > .repo/local_manifests/roomservice.xml << 'EOF'
-          <?xml version="1.0" encoding="UTF-8"?>
-          <manifest>
-            <project path="vendor/omni" name="android_vendor_omni" remote="github" revision="master" />
-          </manifest>
-          EOF
-          ./repo sync -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
           mkdir -p device/sstar/pioneer5_ad
           cp -r $GITHUB_WORKSPACE/device/sstar/pioneer5_ad/* device/sstar/pioneer5_ad/
 

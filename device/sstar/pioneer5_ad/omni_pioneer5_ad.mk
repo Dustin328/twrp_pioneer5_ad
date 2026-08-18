@@ -14,14 +14,8 @@
 # limitations under the License.
 #
 
-# Inherit from omni_pioneer5_ad.mk
 $(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base.mk)
-
-# Inherit from pioneer5_ad device
 $(call inherit-product, device/sstar/pioneer5_ad/device.mk)
-
-# Inherit from Omni product configuration
-$(call inherit-product, vendor/omni/config/common.mk)
 
 # Device identifier
 PRODUCT_DEVICE := pioneer5_ad
