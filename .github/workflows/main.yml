@@ -48,6 +48,7 @@ jobs:
         run: |
           cd ~/twrp
           rm -rf out/target/product/pioneer5_ad/recovery
+          rm -rf out/target/product/pioneer5_ad/obj/PACKAGING/recovery_intermediates
 
       - name: Build
         run: |
