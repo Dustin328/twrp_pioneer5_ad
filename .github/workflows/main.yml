@@ -35,7 +35,7 @@ jobs:
           cat > .repo/local_manifests/roomservice.xml << 'EOF'
           <?xml version="1.0" encoding="UTF-8"?>
           <manifest>
-            <project path="vendor/omni" name="minimal-manifest-twrp/android_vendor_omni" remote="github" revision="twrp-12.1" />
+            <project path="vendor/omni" name="android_vendor_omni" remote="github" revision="master" />
           </manifest>
           EOF
           ./repo sync -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
