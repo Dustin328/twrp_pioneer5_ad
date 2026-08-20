@@ -28,7 +28,3 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 PRODUCT_AAPT_CONFIG := normal
 PRODUCT_AAPT_PREBUILT_DPI := hdpi
 PRODUCT_AAPT_PREF_CONFIG := hdpi
-
-# Required Libraries for Recovery
-PRODUCT_PACKAGES += \
-    libopenaes
