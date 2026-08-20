@@ -34,26 +34,28 @@ jobs:
           chmod a+x repo
           ./repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-12.1
           
-          # Add libopenaes source manually since it's missing from minimal manifest
-          mkdir -p .repo/local_manifests
-          echo '<manifest><project name="TeamWin/android_external_openaes" path="external/openaes" remote="github" revision="master" clone-depth="1" /></manifest>' > .repo/local_manifests/libopenaes.xml
-          
           # Retry sync with exponential backoff
-          for attempt in {1..3}; do
-            echo "Sync attempt $attempt of 3..."
+          for attempt in {1..5}; do
+            echo "Sync attempt $attempt of 5..."
             if ./repo sync -j$(nproc --all) --force-sync --no-clone-bundle --no-tags; then
               echo "Sync successful"
               break
             fi
-            if [ $attempt -lt 3 ]; then
-              wait_time=$((10 * attempt))
+            if [ $attempt -lt 5 ]; then
+              wait_time=$((30 * attempt))
               echo "Sync failed, waiting ${wait_time}s before retry..."
               sleep $wait_time
             else
-              echo "Sync failed after 3 attempts"
+              echo "Sync failed after 5 attempts"
               exit 1
             fi
           done
+
+      - name: Manually Clone libopenaes
+        run: |
+          cd ~/twrp
+          rm -rf external/openaes
+          git clone --depth=1 https://github.com/TeamWin/android_external_openaes.git external/openaes
 
       - name: Clone Device Tree
         run: |
