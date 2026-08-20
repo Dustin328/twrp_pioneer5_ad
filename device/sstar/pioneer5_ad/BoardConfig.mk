@@ -22,13 +22,13 @@ TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
 TARGET_CPU_VARIANT := generic
-# TARGET_USES_64_BIT_BINDER := true # Removed for 32-bit stability
+TARGET_USES_64_BIT_BINDER := true
 
 # Assert
 TARGET_OTA_ASSERT_DEVICE := pioneer5_ad
 
 # Kernel
-BOARD_KERNEL_CMDLINE := androidboot.boot_devices=soc/soc:emmc,soc0/soc/soc:emmc init=/init console=ttyS0,115200 androidboot.console=ttyS0 printk.devkmsg=on 8250.nr_uarts=0 androidboot.hardware=sstar buildvariant=user
+BOARD_KERNEL_CMDLINE := androidboot.boot_devices=soc/soc:emmc,soc0/soc/soc:emmc init=/init console=ttyS0,115200 androidboot.console=ttyS0 printk.devkmsg=on 8250.nr_uarts=0 androidboot.hardware=sstar
 BOARD_KERNEL_BASE := 0x20000000
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_OFFSET := 0x02000000
