@@ -93,3 +93,4 @@ TW_EXCLUDE_PYTHON := true
 
 # Recovery
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery.fstab
+TARGET_RECOVERY_LIBS += libopenaes

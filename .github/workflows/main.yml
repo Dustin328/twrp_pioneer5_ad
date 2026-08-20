@@ -33,6 +33,11 @@ jobs:
           curl https://storage.googleapis.com/git-repo-downloads/repo > repo
           chmod a+x repo
           ./repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-12.1
+          
+          # Add libopenaes source manually since it's missing from minimal manifest
+          mkdir -p .repo/local_manifests
+          echo '<manifest><project name="TeamWin/android_external_openaes" path="external/openaes" remote="github" revision="master" /></manifest>' > .repo/local_manifests/libopenaes.xml
+          
           ./repo sync -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
 
       - name: Clone Device Tree
