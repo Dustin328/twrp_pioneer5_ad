@@ -22,7 +22,7 @@ TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
 TARGET_CPU_VARIANT := generic
-TARGET_USES_64_BIT_BINDER := true
+# TARGET_USES_64_BIT_BINDER := true # Removed for 32-bit stability
 
 # Assert
 TARGET_OTA_ASSERT_DEVICE := pioneer5_ad
@@ -90,6 +90,9 @@ TW_EXCLUDE_MTP := true
 TW_EXCLUDE_FASTBOOTD := true
 TW_EXCLUDE_NANO := true
 TW_EXCLUDE_PYTHON := true
+TW_NO_BASH := true
+TW_NO_HAPTICS := true
+TW_BRIGHTNESS_PATH := ""
 
 # Recovery
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery.fstab
