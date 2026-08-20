@@ -71,7 +71,6 @@ BOARD_ROOT_EXTRA_SYMLINKS := \
 
 # System as root
 BOARD_SUPPORTS_VBOOT := true
-# BOARD_BUILD_SYSTEM_ROOT_IMAGE := true # Removed for Android 12 Dynamic Partitions
 
 # TWRP Configuration
 TW_THEME := portrait_hdpi
@@ -87,6 +86,10 @@ TW_USE_TOOLBOX := true
 TW_EXCLUDE_APPLYPATCH := true
 TW_EXCLUDE_ENCRYPTED_BACKUPS := true
 TW_NO_EXFAT_FUSE := true
+TW_EXCLUDE_MTP := true
+TW_EXCLUDE_FASTBOOTD := true
+TW_EXCLUDE_NANO := true
+TW_EXCLUDE_PYTHON := true
 
 # Recovery
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery.fstab

@@ -14,10 +14,15 @@
 
 /fytdata	emmc	/dev/block/by-name/fytdata								flags=display="FytData";backup=1
 /lsecfs		ext4	/dev/block/by-name/lsecfs								flags=display="LsecFS";backup=1
+/lsecdata	ext4	/dev/block/by-name/lsecdata								flags=display="LsecData";backup=1
+/lshw		ext4	/dev/block/by-name/lshw									flags=display="LSHW";backup=1
+/settings	emmc	/dev/block/by-name/settings								flags=display="Settings";backup=1
+/factory	emmc	/dev/block/by-name/factory								flags=display="Factory";backup=1
 /efs		emmc	/dev/block/by-name/efs									flags=display="EFS";backup=1
 /sec_efs	emmc	/dev/block/by-name/sec_efs								flags=display="Sec EFS";backup=1
 
 /dtbo		emmc	/dev/block/by-name/dtbo									flags=display="DTBO";backup=1;flashimg=1
+/odm_dtbo	emmc	/dev/block/by-name/odm_dtbo								flags=display="Odm DTBO";backup=1;flashimg=1
 /vbmeta		emmc	/dev/block/by-name/vbmeta								flags=display="VBMeta";backup=1;flashimg=1
 /vbmeta_system	emmc	/dev/block/by-name/vbmeta_system							flags=display="VBMeta System";backup=1;flashimg=1
 /vbmeta_vendor	emmc	/dev/block/by-name/vbmeta_vendor							flags=display="VBMeta Vendor";backup=1;flashimg=1
@@ -25,7 +30,8 @@
 /logo		emmc	/dev/block/by-name/logo									flags=display="Logo";backup=1;flashimg=1
 /env		emmc	/dev/block/by-name/env									flags=display="Env";backup=1;flashimg=1
 /riscv		emmc	/dev/block/by-name/riscv								flags=display="RISC-V";backup=1;flashimg=1
-/bootloader	emmc	/dev/block/by-name/bootloader							flags=display="Bootloader";backup=1;flashimg=1
+/bootloader	emmc	/dev/block/mmcblk0p2									flags=display="Bootloader";backup=1;flashimg=1
+/bootloader_bak	emmc	/dev/block/mmcblk0p3									flags=display="Bootloader Backup";backup=1;flashimg=1
 
 /external_sd	vfat	/dev/block/mmcblk1p1			/dev/block/mmcblk1	flags=display="MicroSD";storage;wipeui;removable
 /usb_otg	vfat	/dev/block/sda1				/dev/block/sda		flags=display="USB-OTG";storage;wipeui;removable
