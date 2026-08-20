@@ -33,44 +33,7 @@ jobs:
           curl https://storage.googleapis.com/git-repo-downloads/repo > repo
           chmod a+x repo
           ./repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-12.1
-          
-          # Retry sync with exponential backoff
-          for attempt in {1..5}; do
-            echo "Sync attempt $attempt of 5..."
-            if ./repo sync -j$(nproc --all) --force-sync --no-clone-bundle --no-tags; then
-              echo "Sync successful"
-              break
-            fi
-            if [ $attempt -lt 5 ]; then
-              wait_time=$((30 * attempt))
-              echo "Sync failed, waiting ${wait_time}s before retry..."
-              sleep $wait_time
-            else
-              echo "Sync failed after 5 attempts"
-              exit 1
-            fi
-          done
-
-      - name: Manually Clone libopenaes
-        run: |
-          cd ~/twrp
-          rm -rf external/openaes
-          # Retry logic for git clone
-          for attempt in {1..5}; do
-            echo "Clone attempt $attempt of 5..."
-            if git clone --depth=1 https://github.com/TeamWin/android_external_openaes.git external/openaes; then
-              echo "Clone successful"
-              break
-            fi
-            if [ $attempt -lt 5 ]; then
-              wait_time=$((30 * attempt))
-              echo "Clone failed, waiting ${wait_time}s before retry..."
-              sleep $wait_time
-            else
-              echo "Clone failed after 5 attempts"
-              exit 1
-            fi
-          done
+          ./repo sync -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
 
       - name: Clone Device Tree
         run: |
