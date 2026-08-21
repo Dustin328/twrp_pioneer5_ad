@@ -58,6 +58,8 @@ jobs:
           export ALLOW_MISSING_DEPENDENCIES=true
           lunch omni_pioneer5_ad-userdebug
           mka recoveryimage
+          # Manually append the full DTB section to match stock structure
+          cat $GITHUB_WORKSPACE/device/sstar/pioneer5_ad/dtb_full >> out/target/product/pioneer5_ad/recovery.img
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4

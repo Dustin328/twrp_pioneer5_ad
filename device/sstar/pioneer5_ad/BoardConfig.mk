@@ -28,7 +28,8 @@ TARGET_USES_64_BIT_BINDER := true
 TARGET_OTA_ASSERT_DEVICE := pioneer5_ad
 
 # Kernel
-BOARD_KERNEL_CMDLINE := androidboot.boot_devices=soc/soc:emmc,soc0/soc/soc:emmc init=/init console=ttyS0,115200 androidboot.console=ttyS0 printk.devkmsg=on 8250.nr_uarts=0 androidboot.hardware=sstar
+# Match stock cmdline exactly
+BOARD_KERNEL_CMDLINE := androidboot.boot_devices=soc/soc:emmc,soc0/soc/soc:emmc init=/init console=ttyS0,115200 androidboot.console=ttyS0 printk.devkmsg=on 8250.nr_uarts=0 androidboot.hardware=sstar buildvariant=user
 BOARD_KERNEL_BASE := 0x20000000
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_OFFSET := 0x02000000
@@ -36,15 +37,11 @@ BOARD_RAMDISK_OFFSET := 0x05000000
 BOARD_TAGS_OFFSET := 0x00000100
 BOARD_BOOTIMG_HEADER_VERSION := 2
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/kernel
-TARGET_PREBUILT_DTB := $(DEVICE_PATH)/dtb
-BOARD_MKBOOTIMG_ARGS := --ramdisk_offset $(BOARD_RAMDISK_OFFSET) --tags_offset $(BOARD_TAGS_OFFSET) --header_version $(BOARD_BOOTIMG_HEADER_VERSION) --dtb $(TARGET_PREBUILT_DTB)
+# We remove the separate DTB flag to match stock structure where DTB is appended/hidden
+BOARD_MKBOOTIMG_ARGS := --ramdisk_offset $(BOARD_RAMDISK_OFFSET) --tags_offset $(BOARD_TAGS_OFFSET) --header_version $(BOARD_BOOTIMG_HEADER_VERSION)
 
 # AVB
-BOARD_AVB_ENABLE := true
-BOARD_AVB_RECOVERY_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
-BOARD_AVB_RECOVERY_ALGORITHM := SHA256_RSA2048
-BOARD_AVB_RECOVERY_ROLLBACK_INDEX := 1
-BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 1
+BOARD_AVB_ENABLE := false # Disabled to match stock headers which have no AVB footer
 
 # Platform
 TARGET_BOARD_PLATFORM := ums512
@@ -92,7 +89,6 @@ TW_EXCLUDE_NANO := true
 TW_EXCLUDE_PYTHON := true
 TW_NO_BASH := true
 TW_NO_HAPTICS := true
-TW_BRIGHTNESS_PATH := ""
 
 # Recovery
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery.fstab
