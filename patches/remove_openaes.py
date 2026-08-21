@@ -11,13 +11,12 @@ def patch_twrp_functions(path):
     with open(path, 'r') as f:
         content = f.read()
 
-    # Search for the function name regardless of return type or argument style
+    # Search for the function name
     func_name = "TWFunc::Try_Decrypting_File"
     start_idx = content.find(func_name)
 
     if start_idx == -1:
         print(f"ERROR: Could not find '{func_name}' in {path}")
-        # Let's list some lines around where it should be
         return
 
     print(f"Found '{func_name}' at index {start_idx}")
@@ -44,21 +43,19 @@ def patch_twrp_functions(path):
         print("ERROR: Could not find matching closing brace")
         return
 
-    print(f"Found end of function at index {end_idx}")
-
-    # Replace the entire function block with a clean stub
-    # We keep the original start (everything before the function name)
-    # but we need to find where the return type starts.
-    # A safe bet is to find the previous newline.
+    # Find the beginning of the line containing the function definition
     bol_idx = content.rfind("\n", 0, start_idx) + 1
 
-    stub = "bool TWFunc::Try_Decrypting_File(const std::string& fn, const std::string& password) {\n    return false;\n}\n"
+    # The signature must match twrp-functions.hpp exactly:
+    # static int Try_Decrypting_File(string fn, string password);
+    # Note: TWRP source uses 'using namespace std;' so 'string' is used instead of 'std::string'
+    stub = "int TWFunc::Try_Decrypting_File(string fn, string password) {\n    return 0; // AES Support Removed\n}\n"
 
     new_content = content[:bol_idx] + stub + content[end_idx:]
 
     with open(path, 'w') as f:
         f.write(new_content)
-    print("Successfully stubbed the function. No more oaes_* calls should exist.")
+    print("Successfully stubbed the function with correct signature.")
 
 def clean_android_mk(path):
     if not os.path.exists(path):
@@ -70,7 +67,6 @@ def clean_android_mk(path):
     with open(path, 'w') as f:
         for line in lines:
             if "libopenaes" in line:
-                print(f"Removing line: {line.strip()}")
                 f.write("# Removed libopenaes\n")
             else:
                 f.write(line)
