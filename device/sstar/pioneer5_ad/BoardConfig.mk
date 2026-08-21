@@ -37,8 +37,8 @@ BOARD_RAMDISK_OFFSET := 0x05000000
 BOARD_TAGS_OFFSET := 0x00000100
 BOARD_BOOTIMG_HEADER_VERSION := 2
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/kernel
-# We remove the separate DTB flag to match stock structure where DTB is appended/hidden
-BOARD_MKBOOTIMG_ARGS := --ramdisk_offset $(BOARD_RAMDISK_OFFSET) --tags_offset $(BOARD_TAGS_OFFSET) --header_version $(BOARD_BOOTIMG_HEADER_VERSION)
+TARGET_PREBUILT_DTB := $(DEVICE_PATH)/dtb_header
+BOARD_MKBOOTIMG_ARGS := --ramdisk_offset $(BOARD_RAMDISK_OFFSET) --tags_offset $(BOARD_TAGS_OFFSET) --header_version $(BOARD_BOOTIMG_HEADER_VERSION) --dtb $(TARGET_PREBUILT_DTB)
 
 # AVB
 BOARD_AVB_ENABLE := false # Disabled to match stock headers which have no AVB footer

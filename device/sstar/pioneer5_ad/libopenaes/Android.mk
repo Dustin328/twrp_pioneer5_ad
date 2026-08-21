@@ -1,7 +1,0 @@
-LOCAL_PATH := $(call my-dir)
-include $(CLEAR_VARS)
-LOCAL_MODULE := libopenaes
-LOCAL_MODULE_TAGS := optional
-LOCAL_MODULE_CLASS := SHARED_LIBRARIES
-LOCAL_SRC_FILES := dummy.c
-include $(BUILD_SHARED_LIBRARY)
