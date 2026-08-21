@@ -63,8 +63,10 @@ jobs:
           export ALLOW_MISSING_DEPENDENCIES=true
           lunch omni_pioneer5_ad-userdebug
           mka -j2 recoveryimage
-          # Manually append the full DTB section to match stock structure
-          cat $GITHUB_WORKSPACE/device/sstar/pioneer5_ad/dtb_full >> out/target/product/pioneer5_ad/recovery.img
+          # DTB is now embedded by mkbootimg via BOARD_PREBUILT_DTB --dtb.
+          # The raw post-append we used to do breaks the SigmaStar SPL
+          # signature region and shifts sector boundaries out from
+          # under the ATAG path on ums512 / ums512_1h10 (Pioneer5 AD).
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4

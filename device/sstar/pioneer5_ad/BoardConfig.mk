@@ -37,7 +37,16 @@ BOARD_RAMDISK_OFFSET := 0x05000000
 BOARD_TAGS_OFFSET := 0x00000100
 BOARD_BOOTIMG_HEADER_VERSION := 2
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/kernel
-TARGET_PREBUILT_DTB := $(DEVICE_PATH)/dtb_header
+# Full DTB extracted from stock recovery_backup.img with magiskboot:
+#     magiskboot unpack recovery_backup.img
+#     cat stock_unpacked/dtb_* > device/sstar/pioneer5_ad/dtb_full
+# The 4 KB dtb_header blob is just DTB v0 magic + section table; it
+# has no nodes. SigmaStar SPL (ums512 / splloader) needs mmc, eDP
+# panel, regulators, and the fyt/elable containers resolved during
+# early DT overlay. Embed the real DTB so mkbootimg drops it at the
+# offset the v2 header advertises. With the stub the kernel sticks
+# on "Waiting for root device" before TWRP can init minui.
+TARGET_PREBUILT_DTB := $(DEVICE_PATH)/dtb_full
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset $(BOARD_RAMDISK_OFFSET) --tags_offset $(BOARD_TAGS_OFFSET) --header_version $(BOARD_BOOTIMG_HEADER_VERSION) --dtb $(TARGET_PREBUILT_DTB)
 
 # AVB
