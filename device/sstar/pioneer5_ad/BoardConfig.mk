@@ -44,7 +44,7 @@ TARGET_PREBUILT_DTB := $(DEVICE_PATH)/dtb_full
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset $(BOARD_RAMDISK_OFFSET) --tags_offset $(BOARD_TAGS_OFFSET) --header_version $(BOARD_BOOTIMG_HEADER_VERSION) --dtb $(TARGET_PREBUILT_DTB)
 
 # AVB
-BOARD_AVB_ENABLE := false # Disabled to match stock headers which have no AVB footer
+BOARD_AVB_ENABLE := false
 
 # Platform
 TARGET_BOARD_PLATFORM := ums512
@@ -72,14 +72,13 @@ BOARD_ROOT_EXTRA_SYMLINKS := \
 # System as root
 BOARD_SUPPORTS_VBOOT := true
 
-# Compression - Aggressive LZMA to fit 40MB
-BOARD_RECOVERYIMAGE_COMPRESSION := lzma
-TARGET_RECOVERY_COMPRESSION := lzma
-BOARD_RAMDISK_COMPRESSION := lzma
+# Compression - Back to standard but extremely pruned
+BOARD_RECOVERYIMAGE_COMPRESSION := gzip
 
 # TWRP Configuration
 TW_THEME := portrait_hdpi
 TW_EXTRA_LANGUAGES := false
+TW_DEFAULT_LANGUAGE := en
 TW_SCREEN_BLANK_ON_BOOT := true
 TW_INPUT_BLACKLIST := "hbtp_vm"
 TW_BRIGHTNESS_PATH := "/sys/class/backlight/backlight/brightness"
@@ -101,6 +100,18 @@ TW_EXCLUDE_TZDATA := true
 TW_EXCLUDE_LOGCAT := true
 TW_NO_LEGACY_PROPERTIES := true
 TW_EXCLUDE_WAIT_FOR_SERVICE := true
+
+# Extra Pruning for 40MB limit
+TW_INCLUDE_FB2PNG := false
+TW_EXCLUDE_FUSE_EXFAT := true
+TW_EXCLUDE_LPDUMP := true
+TW_EXCLUDE_LPFLASH := true
+TW_EXCLUDE_REPACKGENERIC := true
+TW_EXCLUDE_TWRP_APP := true
+TW_EXCLUDE_FBE := true
+TW_INCLUDE_JB_CRYPTO := false
+TW_EXCLUDE_NANO := true
+TW_NO_REBOOT_BOOTLOADER := true
 
 # Recovery
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery.fstab
