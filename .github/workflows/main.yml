@@ -51,8 +51,10 @@ jobs:
         run: |
           cd ~/twrp
           python3 $GITHUB_WORKSPACE/patches/apply_misc_bcb_fix.py bootable/recovery/twrp-functions.cpp
-          # Pass the directory to the aggressive openaes removal script
+          # Robust OpenAES removal: Patch source and build config
           python3 $GITHUB_WORKSPACE/patches/remove_openaes.py bootable/recovery
+          # Verify patching
+          grep -C 5 "Try_Decrypting_File" bootable/recovery/twrp-functions.cpp
 
       - name: Build
         run: |
