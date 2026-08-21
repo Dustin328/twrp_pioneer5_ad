@@ -69,5 +69,5 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: twrp-pioneer5_ad
+          name: twrp-pioneer5_ad-experimental
           path: /home/runner/twrp/out/target/product/pioneer5_ad/recovery.img
