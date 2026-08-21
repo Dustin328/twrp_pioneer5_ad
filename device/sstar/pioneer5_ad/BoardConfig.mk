@@ -37,9 +37,7 @@ BOARD_RAMDISK_OFFSET := 0x05000000
 BOARD_TAGS_OFFSET := 0x00000100
 BOARD_BOOTIMG_HEADER_VERSION := 2
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/kernel
-# Full DTB extracted from stock recovery_backup.img with magiskboot:
-#     magiskboot unpack recovery_backup.img
-#     cat stock_unpacked/dtb_* > device/sstar/pioneer5_ad/dtb_full
+# Full DTB extracted from stock recovery_backup.img
 TARGET_PREBUILT_DTB := $(DEVICE_PATH)/dtb_full
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset $(BOARD_RAMDISK_OFFSET) --tags_offset $(BOARD_TAGS_OFFSET) --header_version $(BOARD_BOOTIMG_HEADER_VERSION) --dtb $(TARGET_PREBUILT_DTB)
 
@@ -55,8 +53,8 @@ TARGET_COPY_OUT_VENDOR := vendor
 BOARD_USES_METADATA_PARTITION := true
 
 # Partitions
-BOARD_FLASH_BLOCK_SIZE := 131072 # (Page Size * 64)
-BOARD_RECOVERYIMAGE_PARTITION_SIZE := 41943040 # 40MB based on recovery_backup.img size
+BOARD_FLASH_BLOCK_SIZE := 131072
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 41943040 # 40MB
 
 # Dynamic Partitions
 BOARD_USES_DYNAMIC_PARTITIONS := true
@@ -72,11 +70,11 @@ BOARD_ROOT_EXTRA_SYMLINKS := \
 # System as root
 BOARD_SUPPORTS_VBOOT := true
 
-# Compression - Back to standard but extremely pruned
+# Compression
 BOARD_RECOVERYIMAGE_COMPRESSION := gzip
 
 # TWRP Configuration
-TW_THEME := portrait_hdpi
+TW_THEME := portrait_mdpi
 TW_EXTRA_LANGUAGES := false
 TW_DEFAULT_LANGUAGE := en
 TW_SCREEN_BLANK_ON_BOOT := true
@@ -89,28 +87,35 @@ TW_INCLUDE_CRYPTO := false
 TW_USE_TOOLBOX := true
 TW_EXCLUDE_APPLYPATCH := true
 TW_EXCLUDE_ENCRYPTED_BACKUPS := true
-TW_NO_EXFAT_FUSE := true
-TW_EXCLUDE_MTP := true
-TW_EXCLUDE_FASTBOOTD := true
-TW_EXCLUDE_NANO := true
-TW_EXCLUDE_PYTHON := true
-TW_NO_BASH := true
-TW_NO_HAPTICS := true
 TW_EXCLUDE_TZDATA := true
 TW_EXCLUDE_LOGCAT := true
 TW_NO_LEGACY_PROPERTIES := true
 TW_EXCLUDE_WAIT_FOR_SERVICE := true
 
-# Extra Pruning for 40MB limit
-TW_INCLUDE_FB2PNG := false
+# [1] Switch to MDPI Theme (Smaller)
+# [2] Remove exFAT Drivers
+TW_NO_EXFAT_FUSE := true
 TW_EXCLUDE_FUSE_EXFAT := true
+
+# [5] Remove Screenshots
+TW_INCLUDE_FB2PNG := false
+
+# Keep Shell Tools (Bash/Nano)
+TW_NO_BASH := false
+TW_EXCLUDE_NANO := false
+
+# Keep MTP
+TW_EXCLUDE_MTP := false
+
+# Keep Haptics
+TW_NO_HAPTICS := false
+
+# Extra Pruning for space
+TW_EXCLUDE_FASTBOOTD := true
 TW_EXCLUDE_LPDUMP := true
 TW_EXCLUDE_LPFLASH := true
-TW_EXCLUDE_REPACKGENERIC := true
 TW_EXCLUDE_TWRP_APP := true
 TW_EXCLUDE_FBE := true
-TW_INCLUDE_JB_CRYPTO := false
-TW_EXCLUDE_NANO := true
 TW_NO_REBOOT_BOOTLOADER := true
 
 # Recovery
