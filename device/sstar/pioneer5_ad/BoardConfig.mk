@@ -28,7 +28,6 @@ TARGET_USES_64_BIT_BINDER := true
 TARGET_OTA_ASSERT_DEVICE := pioneer5_ad
 
 # Kernel
-# Match stock cmdline exactly
 BOARD_KERNEL_CMDLINE := androidboot.boot_devices=soc/soc:emmc,soc0/soc/soc:emmc init=/init console=ttyS0,115200 androidboot.console=ttyS0 printk.devkmsg=on 8250.nr_uarts=0 androidboot.hardware=sstar
 BOARD_KERNEL_BASE := 0x20000000
 BOARD_KERNEL_PAGESIZE := 2048
@@ -92,25 +91,21 @@ TW_EXCLUDE_LOGCAT := true
 TW_NO_LEGACY_PROPERTIES := true
 TW_EXCLUDE_WAIT_FOR_SERVICE := true
 
-# [1] Switch to MDPI Theme (Smaller)
-# [2] Remove exFAT Drivers
-TW_NO_EXFAT_FUSE := true
-TW_EXCLUDE_FUSE_EXFAT := true
+# Critical Pruning to fit 40MB limit (The 20MB DTB leaves no room)
+TW_EXCLUDE_MTP := true
+TW_EXCLUDE_NANO := true
+TW_OEM_BUILD := true
+TW_NO_TERMINAL_HELP := true
+TW_EXCLUDE_EXTRA_FONT := true
 
-# [5] Remove Screenshots
-TW_INCLUDE_FB2PNG := false
-
-# Keep Shell Tools (Bash/Nano)
+# Keep Shell and Haptics
 TW_NO_BASH := false
-TW_EXCLUDE_NANO := false
-
-# Keep MTP
-TW_EXCLUDE_MTP := false
-
-# Keep Haptics
 TW_NO_HAPTICS := false
 
-# Extra Pruning for space
+# Extra Pruning
+TW_INCLUDE_FB2PNG := false
+TW_NO_EXFAT_FUSE := true
+TW_EXCLUDE_FUSE_EXFAT := true
 TW_EXCLUDE_FASTBOOTD := true
 TW_EXCLUDE_LPDUMP := true
 TW_EXCLUDE_LPFLASH := true
