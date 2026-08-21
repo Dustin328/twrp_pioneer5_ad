@@ -8,32 +8,42 @@ def patch_file(path, pattern, replacement):
         return
     with open(path, 'r') as f:
         content = f.read()
-    new_content = re.sub(pattern, replacement, content, flags=re.MULTILINE)
+    new_content = re.sub(pattern, replacement, content, flags=re.MULTILINE | re.DOTALL)
     with open(path, 'w') as f:
         f.write(new_content)
     print(f"Patched {path}")
 
 def patch_twrp_functions(path):
-    if not os.path.exists(path): return
+    if not os.path.exists(path):
+        return
     with open(path, 'r') as f:
-        lines = f.readlines()
-    new_lines = []
-    skip = False
-    for line in lines:
-        if "TWFunc::Try_Decrypting_File" in line:
-            new_lines.append(line)
-            new_lines.append("{\n\treturn false; // AES Support Removed\n}\n/*\n")
-            skip = True
-            continue
-        if skip and line.strip() == "}":
-            new_lines.append("*/\n")
-            skip = False
-            continue
-        if not skip:
-            new_lines.append(line)
-    with open(path, 'w') as f:
-        f.writelines(new_lines)
-    print(f"Patched C++ in {path}")
+        content = f.read()
+
+    # Use a robust regex to find the entire Try_Decrypting_File function and replace it with a stub
+    # This handles cases where the opening brace is on a different line and nested braces
+    pattern = r'bool\s+TWFunc::Try_Decrypting_File\s*\([^)]*\)\s*\{.*?\}\n'
+    # Actually, matching nested braces with regex is hard. Let's use a simpler marker-based approach
+    # since we know the structure.
+
+    start_marker = "bool TWFunc::Try_Decrypting_File"
+    start_idx = content.find(start_marker)
+    if start_idx != -1:
+        # Find the first { after the marker
+        brace_idx = content.find("{", start_idx)
+        if brace_idx != -1:
+            # Find the matching }
+            # For simplicity in this specific file, we look for the next } at the start of a line
+            end_idx = content.find("\n}", brace_idx)
+            if end_idx != -1:
+                end_idx += 2 # include the brace
+                stub = "bool TWFunc::Try_Decrypting_File(const string& fn, const string& password) {\n\treturn false; // AES Support Removed\n}\n"
+                new_content = content[:start_idx] + stub + content[end_idx:]
+                with open(path, 'w') as f:
+                    f.write(new_content)
+                print(f"Successfully stubbed Try_Decrypting_File in {path}")
+                return
+
+    print(f"Warning: Could not find Try_Decrypting_File in {path}")
 
 if __name__ == "__main__":
     twrp_dir = sys.argv[1] # Path to ~/twrp/bootable/recovery
@@ -42,9 +52,14 @@ if __name__ == "__main__":
     patch_twrp_functions(os.path.join(twrp_dir, "twrp-functions.cpp"))
 
     # 2. Patch the Build System to remove libopenaes dependency
-    # Remove from Android.mk
-    patch_file(os.path.join(twrp_dir, "Android.mk"), r'libopenaes', '')
-
-    # Some branches use variables, let's be thorough
-    patch_file(os.path.join(twrp_dir, "Android.mk"), r'LOCAL_SHARED_LIBRARIES \+= libopenaes', '# Removed libopenaes')
-    patch_file(os.path.join(twrp_dir, "Android.mk"), r'LOCAL_STATIC_LIBRARIES \+= libopenaes', '# Removed libopenaes')
+    android_mk = os.path.join(twrp_dir, "Android.mk")
+    if os.path.exists(android_mk):
+        with open(android_mk, 'r') as f:
+            lines = f.readlines()
+        with open(android_mk, 'w') as f:
+            for line in lines:
+                if "libopenaes" in line:
+                    f.write("# Removed libopenaes\n")
+                else:
+                    f.write(line)
+        print(f"Removed libopenaes from {android_mk}")
