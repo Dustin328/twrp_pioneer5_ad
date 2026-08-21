@@ -19,10 +19,11 @@ jobs:
           
       - name: Clean Build Output
         run: |
-          cd ~/twrp || mkdir ~/twrp && cd ~/twrp
+          mkdir -p ~/twrp
+          cd ~/twrp
           sudo killall -9 java python* 2>/dev/null || true
-          sudo rm -rf out/
-          sudo rm -rf .repo/project-objects .repo/projects .repo/worktrees 2>/dev/null || true
+          [ -d out ] && sudo rm -rf out/ || true
+          [ -d .repo/worktrees ] && sudo rm -rf .repo/worktrees || true
 
       - name: Sync TWRP Minimal Manifest
         run: |
