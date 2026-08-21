@@ -28,7 +28,7 @@ TARGET_USES_64_BIT_BINDER := true
 TARGET_OTA_ASSERT_DEVICE := pioneer5_ad
 
 # Kernel
-# Match stock cmdline exactly, removed buildvariant=user as it is added by build system
+# Match stock cmdline exactly
 BOARD_KERNEL_CMDLINE := androidboot.boot_devices=soc/soc:emmc,soc0/soc/soc:emmc init=/init console=ttyS0,115200 androidboot.console=ttyS0 printk.devkmsg=on 8250.nr_uarts=0 androidboot.hardware=sstar
 BOARD_KERNEL_BASE := 0x20000000
 BOARD_KERNEL_PAGESIZE := 2048
@@ -72,8 +72,10 @@ BOARD_ROOT_EXTRA_SYMLINKS := \
 # System as root
 BOARD_SUPPORTS_VBOOT := true
 
-# Compression
+# Compression - Aggressive LZMA to fit 40MB
 BOARD_RECOVERYIMAGE_COMPRESSION := lzma
+TARGET_RECOVERY_COMPRESSION := lzma
+BOARD_RAMDISK_COMPRESSION := lzma
 
 # TWRP Configuration
 TW_THEME := portrait_hdpi
@@ -95,6 +97,10 @@ TW_EXCLUDE_NANO := true
 TW_EXCLUDE_PYTHON := true
 TW_NO_BASH := true
 TW_NO_HAPTICS := true
+TW_EXCLUDE_TZDATA := true
+TW_EXCLUDE_LOGCAT := true
+TW_NO_LEGACY_PROPERTIES := true
+TW_EXCLUDE_WAIT_FOR_SERVICE := true
 
 # Recovery
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery.fstab
