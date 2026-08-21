@@ -28,8 +28,8 @@ TARGET_USES_64_BIT_BINDER := true
 TARGET_OTA_ASSERT_DEVICE := pioneer5_ad
 
 # Kernel
-# Match stock cmdline exactly
-BOARD_KERNEL_CMDLINE := androidboot.boot_devices=soc/soc:emmc,soc0/soc/soc:emmc init=/init console=ttyS0,115200 androidboot.console=ttyS0 printk.devkmsg=on 8250.nr_uarts=0 androidboot.hardware=sstar buildvariant=user
+# Match stock cmdline exactly, removed buildvariant=user as it is added by build system
+BOARD_KERNEL_CMDLINE := androidboot.boot_devices=soc/soc:emmc,soc0/soc/soc:emmc init=/init console=ttyS0,115200 androidboot.console=ttyS0 printk.devkmsg=on 8250.nr_uarts=0 androidboot.hardware=sstar
 BOARD_KERNEL_BASE := 0x20000000
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_OFFSET := 0x02000000
@@ -40,12 +40,6 @@ TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/kernel
 # Full DTB extracted from stock recovery_backup.img with magiskboot:
 #     magiskboot unpack recovery_backup.img
 #     cat stock_unpacked/dtb_* > device/sstar/pioneer5_ad/dtb_full
-# The 4 KB dtb_header blob is just DTB v0 magic + section table; it
-# has no nodes. SigmaStar SPL (ums512 / splloader) needs mmc, eDP
-# panel, regulators, and the fyt/elable containers resolved during
-# early DT overlay. Embed the real DTB so mkbootimg drops it at the
-# offset the v2 header advertises. With the stub the kernel sticks
-# on "Waiting for root device" before TWRP can init minui.
 TARGET_PREBUILT_DTB := $(DEVICE_PATH)/dtb_full
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset $(BOARD_RAMDISK_OFFSET) --tags_offset $(BOARD_TAGS_OFFSET) --header_version $(BOARD_BOOTIMG_HEADER_VERSION) --dtb $(TARGET_PREBUILT_DTB)
 
@@ -77,6 +71,9 @@ BOARD_ROOT_EXTRA_SYMLINKS := \
 
 # System as root
 BOARD_SUPPORTS_VBOOT := true
+
+# Compression
+BOARD_RECOVERYIMAGE_COMPRESSION := lzma
 
 # TWRP Configuration
 TW_THEME := portrait_hdpi
