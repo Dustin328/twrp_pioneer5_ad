@@ -28,6 +28,7 @@ TARGET_USES_64_BIT_BINDER := true
 TARGET_OTA_ASSERT_DEVICE := pioneer5_ad
 
 # Kernel
+# We must match the stock loading offsets exactly to bypass the bootloader check
 BOARD_KERNEL_CMDLINE := androidboot.boot_devices=soc/soc:emmc,soc0/soc/soc:emmc init=/init console=ttyS0,115200 androidboot.console=ttyS0 printk.devkmsg=on 8250.nr_uarts=0 androidboot.hardware=sstar
 BOARD_KERNEL_BASE := 0x20000000
 BOARD_KERNEL_PAGESIZE := 2048
@@ -35,10 +36,21 @@ BOARD_KERNEL_OFFSET := 0x02000000
 BOARD_RAMDISK_OFFSET := 0x05000000
 BOARD_TAGS_OFFSET := 0x00000100
 BOARD_BOOTIMG_HEADER_VERSION := 2
+
+# Matching stock OS patch level (2022-04-05)
+PLATFORM_VERSION := 12
+PLATFORM_SECURITY_PATCH := 2022-04-05
+
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/kernel
-# Full DTB extracted from stock recovery_backup.img
 TARGET_PREBUILT_DTB := $(DEVICE_PATH)/dtb_full
-BOARD_MKBOOTIMG_ARGS := --ramdisk_offset $(BOARD_RAMDISK_OFFSET) --tags_offset $(BOARD_TAGS_OFFSET) --header_version $(BOARD_BOOTIMG_HEADER_VERSION) --dtb $(TARGET_PREBUILT_DTB)
+
+# Added --kernel_offset to match stock 0x02000000 requirement
+BOARD_MKBOOTIMG_ARGS := \
+    --kernel_offset $(BOARD_KERNEL_OFFSET) \
+    --ramdisk_offset $(BOARD_RAMDISK_OFFSET) \
+    --tags_offset $(BOARD_TAGS_OFFSET) \
+    --header_version $(BOARD_BOOTIMG_HEADER_VERSION) \
+    --dtb $(TARGET_PREBUILT_DTB)
 
 # AVB
 BOARD_AVB_ENABLE := false
@@ -86,32 +98,20 @@ TW_INCLUDE_CRYPTO := false
 TW_USE_TOOLBOX := true
 TW_EXCLUDE_APPLYPATCH := true
 TW_EXCLUDE_ENCRYPTED_BACKUPS := true
+TW_NO_EXFAT_FUSE := true
+TW_EXCLUDE_MTP := true
+TW_EXCLUDE_FASTBOOTD := true
+TW_EXCLUDE_NANO := true
+TW_EXCLUDE_PYTHON := true
+TW_NO_BASH := false
+TW_NO_HAPTICS := false
 TW_EXCLUDE_TZDATA := true
 TW_EXCLUDE_LOGCAT := true
 TW_NO_LEGACY_PROPERTIES := true
 TW_EXCLUDE_WAIT_FOR_SERVICE := true
-
-# Critical Pruning to fit 40MB limit (The 20MB DTB leaves no room)
-TW_EXCLUDE_MTP := true
-TW_EXCLUDE_NANO := true
 TW_OEM_BUILD := true
 TW_NO_TERMINAL_HELP := true
 TW_EXCLUDE_EXTRA_FONT := true
-
-# Keep Shell and Haptics
-TW_NO_BASH := false
-TW_NO_HAPTICS := false
-
-# Extra Pruning
-TW_INCLUDE_FB2PNG := false
-TW_NO_EXFAT_FUSE := true
-TW_EXCLUDE_FUSE_EXFAT := true
-TW_EXCLUDE_FASTBOOTD := true
-TW_EXCLUDE_LPDUMP := true
-TW_EXCLUDE_LPFLASH := true
-TW_EXCLUDE_TWRP_APP := true
-TW_EXCLUDE_FBE := true
-TW_NO_REBOOT_BOOTLOADER := true
 
 # Recovery
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery.fstab
