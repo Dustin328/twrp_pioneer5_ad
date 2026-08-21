@@ -50,7 +50,8 @@ jobs:
         run: |
           cd ~/twrp
           python3 $GITHUB_WORKSPACE/patches/apply_misc_bcb_fix.py bootable/recovery/twrp-functions.cpp
-          python3 $GITHUB_WORKSPACE/patches/remove_openaes.py bootable/recovery/twrp-functions.cpp
+          # Pass the directory to the aggressive openaes removal script
+          python3 $GITHUB_WORKSPACE/patches/remove_openaes.py bootable/recovery
 
       - name: Build
         run: |
